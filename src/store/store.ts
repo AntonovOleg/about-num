@@ -3,6 +3,6 @@ import infoSlice from '../fetures/info/infoSlice';
 
 export const store = configureStore({
   reducer: {
-    info: infoSlice
+    data: infoSlice
   }
 })

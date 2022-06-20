@@ -1,18 +1,16 @@
 import { Box, Button, Switch, TextField } from '@mui/material';
-import { FC, useState } from 'react';
+import {  FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getInfo, getRandomInfo } from '../store/actions/actions';
+import { TYPE_DATE, TYPE_MATH, TYPE_TRIVIA, TYPE_YEAR } from '../constants/types';
+import { getInfo, getInfoActionType, getRandomInfo, getRandomInfoActionType } from '../store/actions/actions';
+
+export type ActionTypes = getInfoActionType | getRandomInfoActionType;
 
 const InputInterface: FC = () => {
-  const dispatch = useDispatch();
-  const [value, setValue] = useState('');
-  const [isRnd, setRnd] = useState(false);
 
-  //type constants
-  const TYPE_TRIVIA = 'trivia';
-  const TYPE_YEAR = 'year';
-  const TYPE_DATE = 'date';
-  const TYPE_MATH = 'math';
+  const dispatch = useDispatch();
+  const [value = '', setValue] = useState<string>('');
+  const [isRnd=false, setRnd] = useState<boolean>(false);
 
   const changeText = (e: any): void => {
     setValue(e.target.value);
@@ -32,6 +30,8 @@ const InputInterface: FC = () => {
     return false;
   };
 
+  
+
   const getAbout = (type: string): void => {
     setValue('');
     if (!validate()) return;
@@ -40,9 +40,7 @@ const InputInterface: FC = () => {
       : dispatch<any>(getInfo(type, value));
   };
 
-  const textField = isRnd ? (
-    <></>
-  ) : (
+  const textField = !isRnd && (
     <TextField
       label='Enter number'
       variant='outlined'
@@ -55,7 +53,7 @@ const InputInterface: FC = () => {
     />
   );
 
-  const renderButton = (type: string, title: string): any => {
+  const renderButton = (type: string, title: string): React.ReactNode => {
     return (
       <Button
         variant='outlined'

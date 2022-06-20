@@ -15,3 +15,14 @@ export const getRandomInfo = (type: string) => (dispatch: any) => {
       dispatch(setInfo({info: data}))
     })
 }
+
+export type getInfoActionType = {
+  type: string,
+  value: string,
+  payload: {info: string}
+}
+
+export type getRandomInfoActionType = {
+  type: string,
+  payload: {info: string}
+}

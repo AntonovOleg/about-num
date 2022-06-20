@@ -8,7 +8,7 @@ const connector = axios.create({
   }
 })
 
-export const apiGetRandom = async (type: string) => {
+export const apiGetRandom = async (type: string): Promise<string> => {
   return await connector
     .get(`/random/${type}`)
     .then(res=>{
@@ -16,7 +16,7 @@ export const apiGetRandom = async (type: string) => {
     })
 }
 
-export const apiGet = async (type: string, value: string) => {
+export const apiGet = async (type: string, value: string): Promise<string> => {
   return await connector
     .get(`/${value}/${type}`)
     .then(res=>{

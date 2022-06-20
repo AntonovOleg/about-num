@@ -1,8 +1,6 @@
 import axios from 'axios';
-import { setInfo } from '../fetures/info/infoSlice';
 
 const URL = 'http://numbersapi.com';
-
 const connector = axios.create({
   baseURL: URL,
   headers: {

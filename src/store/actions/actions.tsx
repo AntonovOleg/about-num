@@ -1,5 +1,5 @@
-import { setInfo } from "../../fetures/info/infoSlice";
-import { apiGet, apiGetRandom } from "../../services/services";
+import { setInfo } from '../../fetures/info/infoSlice';
+import { apiGet, apiGetRandom } from '../../services/services';
 
 
 export const getInfo = (type: string, value: string) => (dispatch: any)=> {

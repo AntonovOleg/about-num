@@ -1,82 +1,99 @@
-import { FC, useState } from "react";
-import { useDispatch } from "react-redux";
-import { getInfo, getRandomInfo } from "../store/actions/actions";
+import { Box, Button, Switch, TextField } from '@mui/material';
+import { FC, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getInfo, getRandomInfo } from '../store/actions/actions';
 
 const InputInterface: FC = () => {
   const dispatch = useDispatch();
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
   const [isRnd, setRnd] = useState(false);
 
-  const changeText = (e: any) => {
+  //type constants
+  const TYPE_TRIVIA = 'trivia';
+  const TYPE_YEAR = 'year';
+  const TYPE_DATE = 'date';
+  const TYPE_MATH = 'math';
+
+  const changeText = (e: any): void => {
     setValue(e.target.value);
   };
 
-  const checkboxHandler = () => {
+  const checkboxHandler = (): void => {
     setRnd(!isRnd);
   };
 
-  const getAboutNumber = () => {
-    if (value === '') return;
-    isRnd
-      ? dispatch<any>(getRandomInfo("trivia"))
-      : dispatch<any>(getInfo("trivia", value));
+  const validate = (): boolean => {
+    if (isRnd) return true;
+    if (!(value === '')) {
+      const tmp: number = Number(value);
+      if (!isNaN(tmp)) return true;
+    }
+    alert('Enter the number');
+    return false;
   };
 
-  const getAboutYear = () => {
-    if (value === '') return;
+  const getAbout = (type: string): void => {
+    setValue('');
+    if (!validate()) return;
     isRnd
-      ? dispatch<any>(getRandomInfo("year"))
-      : dispatch<any>(getInfo("year", value));
+      ? dispatch<any>(getRandomInfo(type))
+      : dispatch<any>(getInfo(type, value));
   };
 
-  const getAboutDate = () => {
-    if (value === '') return;
-    isRnd
-      ? dispatch<any>(getRandomInfo("date"))
-      : dispatch<any>(getInfo("date", value));
-  };
+  const textField = isRnd ? (
+    <></>
+  ) : (
+    <TextField
+      label='Enter number'
+      variant='outlined'
+      onChange={(e) => changeText(e)}
+      sx={{
+        mt: '15px',
+        width: '70%',
+      }}
+      value={value}
+    />
+  );
 
-  const getAboutMath = () => {
-    if (value === '') return;
-    isRnd
-      ? dispatch<any>(getRandomInfo("math"))
-      : dispatch<any>(getInfo("math", value));
+  const renderButton = (type: string, title: string): any => {
+    return (
+      <Button
+        variant='outlined'
+        onClick={() => {
+          getAbout(type);
+        }}
+        sx={{
+          mr: '10px',
+          mb: '5px',
+        }}
+      >
+        {title}
+      </Button>
+    );
   };
 
   return (
-    <>
-      <input onChange={(e) => changeText(e)} />
-      <input type="checkbox" checked={isRnd} onChange={checkboxHandler} />
-      RND
-      <button
-        onClick={() => {
-          getAboutNumber();
+    <Box>
+      <Box
+        sx={{
+          mb: '20px',
         }}
       >
-        О числе
-      </button>
-      <button
-        onClick={() => {
-          getAboutYear();
-        }}
-      >
-        О годе
-      </button>
-      <button
-        onClick={() => {
-          getAboutDate();
-        }}
-      >
-        О дате
-      </button>
-      <button
-        onClick={() => {
-          getAboutMath();
-        }}
-      >
-        Математический факт
-      </button>
-    </>
+        {textField}
+
+        <Box>
+          <Switch checked={isRnd} onChange={checkboxHandler} />
+          Random
+        </Box>
+      </Box>
+
+      <Box>
+        {renderButton(TYPE_TRIVIA, 'Number')}
+        {renderButton(TYPE_YEAR, 'Year')}
+        {renderButton(TYPE_DATE, 'Date')}
+        {renderButton(TYPE_MATH, 'Math fact')}
+      </Box>
+    </Box>
   );
 };
 
